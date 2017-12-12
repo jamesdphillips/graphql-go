@@ -115,6 +115,12 @@ func parseDocument(parser *Parser) (*ast.Document, error) {
 				return nil, err
 			}
 			nodes = append(nodes, node)
+		} else if peek(parser, lexer.TokenKind[lexer.STRING]) || peek(parser, lexer.TokenKind[lexer.BLOCK_STRING]) {
+			node := ast.NewStringValue(&ast.StringValue{
+				Value: parser.Token.Value,
+				Loc:   loc(parser, parser.Token.Start),
+			})
+			nodes = append(nodes, node)
 		} else if peek(parser, lexer.TokenKind[lexer.NAME]) {
 			switch parser.Token.Value {
 			case "query":
